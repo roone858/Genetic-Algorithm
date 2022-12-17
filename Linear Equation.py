@@ -1,5 +1,4 @@
 import random
-import datetime
 
 
 def equation(x, y, z):
@@ -7,11 +6,9 @@ def equation(x, y, z):
 
 
 def init_population(numOfPopulation):
-    parents = []
-    for i in range(numOfPopulation):
-        parents.append((random.uniform(0, numOfPopulation), random.uniform(
-            0, numOfPopulation), random.uniform(0, numOfPopulation)))
-    return parents
+    return [(random.uniform(0, numOfPopulation),
+             random.uniform(0, numOfPopulation),
+             random.uniform(0, numOfPopulation)) for i in range(numOfPopulation)]
 
 
 def calc_fitness(x, y, z):
@@ -36,25 +33,25 @@ def crossover(parent_1, parent_2):
 def mutate(child):
     m = random.randrange(0, 3)
     child = list(child)
-    child[m] = child[m]*random.uniform(0.99, 1.01)
+    child[m] = child[m]*random.uniform(0.97, 1.01)
     return tuple(child)
 
 
 solutions = init_population(1000)
 g = 0
 while True:
+    # calc fitness and selection function
     bestSolutions = findBestSolutions(solutions)
     newGeneration = []
     for i in range(0, len(bestSolutions), 2):
-
         child1, child2, parent1, parent2 = crossover(
-            bestSolutions[i][1], bestSolutions[i+1][1])
-        child1, child2 = mutate(child1), mutate(child2)
+            bestSolutions[i][1], bestSolutions[i+1][1])  # croseover the best solution
+        child1, child2 = mutate(child1), mutate(child2)  # mutation of child
         newGeneration.extend((parent1, parent2, child1, child2))
 
-    solutions = newGeneration
+    solutions = newGeneration  # return the newGeneration
     print(f"\r gen = {g+1:06} -bestFitness={bestSolutions[0][0]}", end="")
-    if bestSolutions[0][0] > 999:
+    if bestSolutions[0][0] > 999:  # termnation as best fitness
         print("\n", bestSolutions[0][1])
         break
     g += 1
