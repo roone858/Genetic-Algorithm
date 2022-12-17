@@ -9,7 +9,7 @@ def generate_parent(length):
     genes = []
     while len(genes) < length:
         sampleSize = min(length - len(genes), len(geneSet))
-        genes.extend(random.sample(geneSet, sampleSize))
+        genes.extend(random.sample(geneSet, sampleSize))  # random selection
     print(genes)  # random.sample return list so we use extend
     return ''.join(genes)
 
@@ -32,10 +32,10 @@ def mutate(parent):
 def display(guess):
     timeDiff = datetime.datetime.now() - startTime
     fitness = calc_fitness(guess)
+    print(target)
     print("{0}\t{1}\t{2}".format(guess, fitness, str(timeDiff)))
 
 
-random.seed()
 startTime = datetime.datetime.now()
 parent = generate_parent(len(target))
 parentFitness = calc_fitness(parent)
@@ -48,7 +48,7 @@ while True:
     if parentFitness >= child_Fitness:
         continue
     display(child)
-    if child_Fitness >= len(parent):
+    if child_Fitness >= len(parent):  # termnation as best fitness
         break
     parentFitness = child_Fitness
     parent = child

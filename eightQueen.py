@@ -10,7 +10,7 @@ def calc_fitness(population):
     fitnessValues = []
     for x in population:
         penalty = 0
-        for i in range(8):
+        for i in range(len(x)):
             r = x[i]
             for j in range(8):
                 if i == j:
@@ -26,18 +26,18 @@ def calc_fitness(population):
 
 def selection(populations, fitness_values):
     nega = (np.abs(min(fitness_values) - 1)) + np.array(fitness_values)
-    props = [num / sum(nega) for num in nega]
+    probs = [num / sum(nega) for num in nega]
     # print("negative value of fitness  is : \n", nega)
-    # print("props is : \n", props)
+    # print("probs is : \n", probs)
     n = len(populations)
-    return populations[np.random.choice(np.arange(n), size=n, p=props)]
+    return populations[np.random.choice(np.arange(n), size=n, p=probs)]
 
 
 def crossover(parent_1, parent_2, pc):
     r = np.random.random()
     if r < pc:
         m = np.random.randint(1, 8)
-        child_1 = np.concatenate([parent_1[:m], parent_2[m:]])
+        child_1 = np.concatenate([parent_1[:m], parent_2[m:]]) # single point cross over
         child_2 = np.concatenate([parent_2[:m], parent_1[m:]])
     else:
         child_1 = parent_1.copy()
